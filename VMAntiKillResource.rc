@@ -1,0 +1,3 @@
+bcdedit RCDATA "bat\\bcdedit.bat"
+diskpart RCDATA "bat\\diskpart.bat"
+mountvol RCDATA "bat\\mountvol.bat"
