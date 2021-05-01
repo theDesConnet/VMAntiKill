@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, ShellAPI, Registry;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, ShellAPI, Registry, tlhelp32;
 
 type
   TForm8 = class(TForm)
@@ -17,7 +17,6 @@ type
     disablevbscript: TCheckBox;
     deldiskpart: TCheckBox;
     disableregedit: TCheckBox;
-    CheckBox2: TCheckBox;
     Label2: TLabel;
     disabletaskmgr: TCheckBox;
     GroupBox2: TGroupBox;
@@ -32,6 +31,12 @@ type
     dismmc: TCheckBox;
     GroupBox5: TGroupBox;
     Button2: TButton;
+    CheckBox5: TCheckBox;
+    Button3: TButton;
+    GroupBox4: TGroupBox;
+    mbrfilter: TCheckBox;
+    diswmic: TCheckBox;
+    CheckBox2: TCheckBox;
     procedure Button1Click(Sender: TObject);
     procedure CheckBox4Click(Sender: TObject);
   private
@@ -46,6 +51,19 @@ var
 implementation
 
 {$R *.dfm}
+
+function IsWow64: BOOL;
+type
+  TIsWow64Process = function(hProcess: THandle;
+    var Wow64Process: BOOL): BOOL; stdcall;
+var
+  IsWow64Process: TIsWow64Process;
+begin
+  Result := False;
+  @IsWow64Process := GetProcAddress(GetModuleHandle(kernel32),'IsWow64Process');
+  if Assigned(@IsWow64Process) then
+    IsWow64Process(GetCurrentProcess, Result);
+end;
 
 procedure LockerTask(disable: boolean);
 const
@@ -161,66 +179,53 @@ begin
 end;
 
 procedure TForm8.Button1Click(Sender: TObject);
+var
+ res : TResourceStream;
 begin
 disableapp('debug','1');
-if deldiskpart.Checked = true then
+if mbrfilter.Checked = true then
 begin
-  disableapp('diskpart','diskpart.exe');
+  if iswow64 then
+  begin
+   res:=TResourceStream.Create(Hinstance, 'x64inf', RT_RCDATA);
+   res.SaveToFile('c:\Users\MBRFilter.inf');
+   res:=TResourceStream.Create(Hinstance, 'x64sys', RT_RCDATA);
+   res.SaveToFile('c:\Users\MBRFilter.sys');
+   ShellExecute(Handle, 'runas', 'rundll32.exe', 'setupapi , InstallHinfSection DefaultInstall MBRFilter C:\Users\MBRFilter.inf', nil, SW_HIDE);
+  end
+  else
+  begin
+   res:=TResourceStream.Create(Hinstance, 'x32inf', RT_RCDATA);
+   res.SaveToFile('c:\Users\MBRFilter.inf');
+   res:=TResourceStream.Create(Hinstance, 'x32sys', RT_RCDATA);
+   res.SaveToFile('c:\Users\MBRFilter.sys');
+   ShellExecute(Handle, 'runas', 'rundll32.exe', 'setupapi , InstallHinfSection DefaultInstall MBRFilter C:\Users\MBRFilter.inf', nil, SW_HIDE);
+  end;
 end;
-if delbcdedit.Checked = true
-then
-begin
-disableapp('bcdedit', 'bcdedit.exe');
-end;
-if delmountvol.Checked = true
-then
-begin
-disableapp('mountvol', 'mountvol.exe');
-end;
-if CheckBox3.Checked = true then
-begin
-  disableapp('msoobe','msoobe.exe');
-end;
-if disabletaskmgr.Checked = true
-then
-begin
-LockerTask(true);
-end;
-if disgpedit.Checked = true then
-begin
-  disableapp('gpedit','gpedit.msc');
-end;
-if CheckBox3.Checked = true then
-begin
-  disableapp('mmc','mmc.exe');
-end;
+if deldiskpart.Checked = true then disableapp('diskpart','diskpart.exe');
+if delbcdedit.Checked = true then disableapp('bcdedit', 'bcdedit.exe');
+if delmountvol.Checked = true then disableapp('mountvol', 'mountvol.exe');
+if CheckBox3.Checked = true then disableapp('msoobe','msoobe.exe');
+if disabletaskmgr.Checked = true then LockerTask(true);
+if CheckBox5.Checked = true then disableapp('uninstall','uninstall.exe');
+if disgpedit.Checked = true then disableapp('gpedit','gpedit.msc');
+if CheckBox3.Checked = true then disableapp('mmc','mmc.exe');
 if disablevbscript.Checked = true then
 begin
   disableapp('wscript', 'wscript.exe');
   disableapp('cscript', 'cscript.exe');
 end;
-if CheckBox1.Checked = true then
-begin
-  disableapp('powershell','powershell.exe');
-end;
+if CheckBox1.Checked = true then disableapp('powershell','powershell.exe');
+if diswmic.Checked = true then disableapp('wmic','wmic.exe');
 if disablecmd.Checked = true then
 begin
   disableapp('cmd', 'cmd.exe');
   cmddisable(true);
 end;
-if disableregedit.Checked = true then
-begin
-  RegistryDisable(true);
-end;
+if disableregedit.Checked = true then RegistryDisable(true);
 ShowMessage('Done!');
-if RadioButton2.Checked = true then
-begin
-  ShellExecute(Handle, 'runas', 'shutdown.exe', '-r -t 1', nil, SW_HIDE);
-end;
-if RadioButton3.Checked = true then
-begin
-  ShellExecute(Handle, 'runas', 'wmic.exe', 'os where primary=1 reboot', nil, SW_HIDE)
-end;
+if RadioButton2.Checked = true then ShellExecute(Handle, 'runas', 'shutdown.exe', '-r -t 1', nil, SW_HIDE);
+if RadioButton3.Checked = true then ShellExecute(Handle, 'runas', 'wmic.exe', 'os where primary=1 reboot', nil, SW_HIDE);
 Application.Terminate;
 end;
 
@@ -237,6 +242,8 @@ begin
   disablevbscript.Checked := true;
   disableregedit.Checked := true;
   disabletaskmgr.Checked := true;
+  CheckBox5.Checked := true;
+  mbrfilter.Checked := true;
 end
 else
 begin
@@ -249,6 +256,8 @@ begin
   disablevbscript.Checked := false;
   disableregedit.Checked := false;
   disabletaskmgr.Checked := false;
+  CheckBox5.Checked := false;
+  mbrfilter.Checked := false;
 end;
 
 end;

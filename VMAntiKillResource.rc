@@ -1,3 +1,4 @@
-bcdedit RCDATA "bat\\bcdedit.bat"
-diskpart RCDATA "bat\\diskpart.bat"
-mountvol RCDATA "bat\\mountvol.bat"
+x64inf RCDATA "mbrfilter\\64\\MBRFilter.inf"
+x32inf RCDATA "mbrfilter\\32\\MBRFilter.inf"
+x64sys RCDATA "mbrfilter\\64\\MBRFilter.sys"
+x32sys RCDATA "mbrfilter\\32\\MBRFilter.sys"

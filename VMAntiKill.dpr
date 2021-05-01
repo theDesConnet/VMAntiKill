@@ -6,6 +6,8 @@ program VMAntiKill;
 
 
 
+{$R *.dres}
+
 uses
   Vcl.Forms,
   Main in 'Main.pas' {Form8};

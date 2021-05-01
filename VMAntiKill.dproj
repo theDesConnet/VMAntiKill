@@ -85,9 +85,10 @@
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=DesConnet;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=VMAntiKill;LegalCopyright=DesConnet;LegalTrademarks=DS1NC;OriginalFilename=VMAntiKill.exe;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=Save VM in CollabVM;SpecialBuild=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=DesConnet;FileDescription=$(MSBuildProjectName);FileVersion=1.0.1.0;InternalName=VMAntiKill;LegalCopyright=DesConnet;LegalTrademarks=DS1NC;OriginalFilename=VMAntiKill.exe;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=Save VM in CollabVM;SpecialBuild=</VerInfo_Keys>
         <AppExecutionLevel>highestAvailable</AppExecutionLevel>
         <VerInfo_Special>true</VerInfo_Special>
+        <VerInfo_Release>1</VerInfo_Release>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -107,6 +108,26 @@
             <Form>Form8</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <RcItem Include="mbrfilter\64\MBRFilter.inf">
+            <ContainerId>ResourceItem</ContainerId>
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>x64inf</ResourceId>
+        </RcItem>
+        <RcItem Include="mbrfilter\32\MBRFilter.inf">
+            <ContainerId>ResourceItem</ContainerId>
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>x32inf</ResourceId>
+        </RcItem>
+        <RcItem Include="mbrfilter\64\MBRFilter.sys">
+            <ContainerId>ResourceItem</ContainerId>
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>x64sys</ResourceId>
+        </RcItem>
+        <RcItem Include="mbrfilter\32\MBRFilter.sys">
+            <ContainerId>ResourceItem</ContainerId>
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>x32sys</ResourceId>
+        </RcItem>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -133,6 +154,30 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
+                <DeployFile LocalName="mbrfilter\32\MBRFilter.inf" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="mbrfilter\64\MBRFilter.sys" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="mbrfilter\32\MBRFilter.sys" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="mbrfilter\64\MBRFilter.inf" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="Win32\Debug\VMAntiKill.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>VMAntiKill.exe</RemoteName>

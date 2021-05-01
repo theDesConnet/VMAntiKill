@@ -4,7 +4,7 @@ object Form8: TForm8
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'VMAntiKill for CollabVM (By DesConnet)'
-  ClientHeight = 329
+  ClientHeight = 423
   ClientWidth = 341
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -31,16 +31,16 @@ object Form8: TForm8
   object Label2: TLabel
     Left = 262
     Top = 21
-    Width = 55
+    Width = 65
     Height = 13
-    Caption = 'v1.0 (Beta)'
+    Caption = 'v1.0.1 (Beta)'
   end
   object GroupBox1: TGroupBox
     Left = 0
     Top = 40
     Width = 337
     Height = 106
-    Caption = 'Functions'
+    Caption = 'Disable'
     TabOrder = 0
     object disablecmd: TCheckBox
       Left = 16
@@ -90,22 +90,13 @@ object Form8: TForm8
       Caption = 'Disable RegEdit'
       TabOrder = 5
     end
-    object CheckBox2: TCheckBox
-      Left = 16
-      Top = 62
-      Width = 97
-      Height = 17
-      Caption = 'Install MBRFilter'
-      Enabled = False
-      TabOrder = 6
-    end
     object disabletaskmgr: TCheckBox
       Left = 119
       Top = 62
       Width = 97
       Height = 17
       Caption = 'Disable TaskMgr'
-      TabOrder = 7
+      TabOrder = 6
     end
     object CheckBox1: TCheckBox
       Left = 229
@@ -113,20 +104,28 @@ object Form8: TForm8
       Width = 108
       Height = 17
       Caption = 'Disable Powershell'
-      TabOrder = 8
+      TabOrder = 7
     end
     object CheckBox3: TCheckBox
+      Left = 16
+      Top = 62
+      Width = 97
+      Height = 17
+      Caption = 'Disable MSOobe'
+      TabOrder = 8
+    end
+    object CheckBox5: TCheckBox
       Left = 16
       Top = 85
       Width = 97
       Height = 17
-      Caption = 'Disable MSOobe'
+      Caption = 'Disable Uninstall'
       TabOrder = 9
     end
   end
   object Button1: TButton
     Left = 4
-    Top = 287
+    Top = 382
     Width = 329
     Height = 41
     Caption = 'Start'
@@ -136,8 +135,8 @@ object Form8: TForm8
   end
   object GroupBox2: TGroupBox
     Left = 0
-    Top = 191
-    Width = 337
+    Top = 263
+    Width = 341
     Height = 42
     Caption = 'Reboot (Recommended)'
     TabOrder = 2
@@ -170,14 +169,14 @@ object Form8: TForm8
   end
   object GroupBox3: TGroupBox
     Left = 0
-    Top = 148
-    Width = 337
-    Height = 37
+    Top = 191
+    Width = 341
+    Height = 66
     Caption = 'Options'
     TabOrder = 3
     object CheckBox4: TCheckBox
       Left = 16
-      Top = 16
+      Top = 17
       Width = 97
       Height = 17
       Caption = 'Select All'
@@ -185,36 +184,77 @@ object Form8: TForm8
       OnClick = CheckBox4Click
     end
     object disgpedit: TCheckBox
-      Left = 96
+      Left = 111
       Top = 17
-      Width = 146
+      Width = 105
       Height = 17
-      Caption = 'Disable gpedit.msc (Beta)'
+      Caption = 'Disable gpedit.msc'
       TabOrder = 1
     end
     object dismmc: TCheckBox
-      Left = 248
+      Left = 241
       Top = 17
       Width = 97
       Height = 17
       Caption = 'Disable MMC'
       TabOrder = 2
     end
+    object diswmic: TCheckBox
+      Left = 16
+      Top = 40
+      Width = 97
+      Height = 17
+      Caption = 'Disable WMIC'
+      TabOrder = 3
+    end
+    object CheckBox2: TCheckBox
+      Left = 111
+      Top = 40
+      Width = 97
+      Height = 17
+      Caption = 'Run Once Apps'
+      TabOrder = 4
+    end
   end
   object GroupBox5: TGroupBox
     Left = 0
-    Top = 239
-    Width = 337
-    Height = 42
+    Top = 311
+    Width = 341
+    Height = 73
     Caption = 'Other'
     TabOrder = 4
     object Button2: TButton
-      Left = 16
+      Left = 4
       Top = 14
-      Width = 301
+      Width = 330
       Height = 25
       Caption = 'Hard Mode (Soon)'
       Enabled = False
+      TabOrder = 0
+    end
+    object Button3: TButton
+      Left = 3
+      Top = 45
+      Width = 331
+      Height = 25
+      Caption = 'Disable Custom App (Soon)'
+      Enabled = False
+      TabOrder = 1
+    end
+  end
+  object GroupBox4: TGroupBox
+    Left = 0
+    Top = 148
+    Width = 341
+    Height = 37
+    Caption = 'Addon'#39's'
+    TabOrder = 5
+    object mbrfilter: TCheckBox
+      Left = 12
+      Top = 17
+      Width = 125
+      Height = 17
+      Caption = 'Install MBRFilter (Beta)'
       TabOrder = 0
     end
   end
