@@ -1,10 +1,12 @@
+//VMAntiKill (c0d9d by DesConnet)
 unit Main;
 
 interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, ShellAPI, Registry, tlhelp32;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, ShellAPI, Registry, tlhelp32,
+  Vcl.ComCtrls;
 
 type
   TForm8 = class(TForm)
@@ -20,9 +22,6 @@ type
     Label2: TLabel;
     disabletaskmgr: TCheckBox;
     GroupBox2: TGroupBox;
-    RadioButton1: TRadioButton;
-    RadioButton2: TRadioButton;
-    RadioButton3: TRadioButton;
     CheckBox1: TCheckBox;
     CheckBox3: TCheckBox;
     GroupBox3: TGroupBox;
@@ -37,8 +36,16 @@ type
     mbrfilter: TCheckBox;
     diswmic: TCheckBox;
     CheckBox2: TCheckBox;
+    StatusBar1: TStatusBar;
+    RadioButton1: TRadioButton;
+    RadioButton2: TRadioButton;
+    Label3: TLabel;
+    Button4: TButton;
+    CheckBox6: TCheckBox;
     procedure Button1Click(Sender: TObject);
     procedure CheckBox4Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -50,20 +57,57 @@ var
 
 implementation
 
+uses avinstaller;
+
 {$R *.dfm}
 
-function IsWow64: BOOL;
-type
-  TIsWow64Process = function(hProcess: THandle;
-    var Wow64Process: BOOL): BOOL; stdcall;
+function MyExitWindows(RebootParam: Longword): Boolean;
 var
-  IsWow64Process: TIsWow64Process;
+  TTokenHd: THandle;
+  TTokenPvg: TTokenPrivileges;
+
+
+cbtpPrevious: DWORD;
+  rTTokenPvg: TTokenPrivileges;
+  pcbtpPreviousRequired: DWORD;
+  tpResult: Boolean;
+const
+  SE_SHUTDOWN_NAME = 'SeShutdownPrivilege';
 begin
-  Result := False;
-  @IsWow64Process := GetProcAddress(GetModuleHandle(kernel32),'IsWow64Process');
-  if Assigned(@IsWow64Process) then
-    IsWow64Process(GetCurrentProcess, Result);
+  if Win32Platform = VER_PLATFORM_WIN32_NT then
+  begin
+    tpResult := OpenProcessToken(GetCurrentProcess(),
+      TOKEN_ADJUST_PRIVILEGES or TOKEN_QUERY,
+      TTokenHd);
+    if tpResult then
+    begin
+      tpResult := LookupPrivilegeValue(nil,
+                                       SE_SHUTDOWN_NAME,
+                                       TTokenPvg.Privileges[0].Luid);
+      TTokenPvg.PrivilegeCount := 1;
+      TTokenPvg.Privileges[0].Attributes := SE_PRIVILEGE_ENABLED;
+      cbtpPrevious := SizeOf(rTTokenPvg);
+      pcbtpPreviousRequired := 0;
+      if tpResult then
+        //Older Delphi - replace the WinApi. to read WinApi.AdjustTokenPrivileges
+        WinApi.Windows.AdjustTokenPrivileges(TTokenHd,
+                                      False,
+                                      TTokenPvg,
+                                      cbtpPrevious,
+                                      rTTokenPvg,
+                                      pcbtpPreviousRequired);
+    end;
+  end;
+  Result := ExitWindowsEx(RebootParam, 0);
 end;
+
+Function IsWin64Or32: string;
+Begin
+   if Pos( '64-bit', TOSVersion.ToString ) > 0 then
+     Result := '64-bit'
+   Else
+     Result := '32-bit';
+End;
 
 procedure LockerTask(disable: boolean);
 const
@@ -185,13 +229,13 @@ begin
 disableapp('debug','1');
 if mbrfilter.Checked = true then
 begin
-  if iswow64 then
+  if IsWin64Or32 = '64-bit' then
   begin
    res:=TResourceStream.Create(Hinstance, 'x64inf', RT_RCDATA);
    res.SaveToFile('c:\Users\MBRFilter.inf');
    res:=TResourceStream.Create(Hinstance, 'x64sys', RT_RCDATA);
    res.SaveToFile('c:\Users\MBRFilter.sys');
-   ShellExecute(Handle, 'runas', 'rundll32.exe', 'setupapi , InstallHinfSection DefaultInstall MBRFilter C:\Users\MBRFilter.inf', nil, SW_HIDE);
+   ShellExecute(Handle, 'runas', 'cmd.exe', '/c InfDefaultInstall C:\Users\MBRFilter.inf', nil, SW_HIDE);
   end
   else
   begin
@@ -199,9 +243,10 @@ begin
    res.SaveToFile('c:\Users\MBRFilter.inf');
    res:=TResourceStream.Create(Hinstance, 'x32sys', RT_RCDATA);
    res.SaveToFile('c:\Users\MBRFilter.sys');
-   ShellExecute(Handle, 'runas', 'rundll32.exe', 'setupapi , InstallHinfSection DefaultInstall MBRFilter C:\Users\MBRFilter.inf', nil, SW_HIDE);
+   ShellExecute(Handle, 'runas', 'rundll32.exe', 'setupapi , InstallHinfSection DefaultInstall 132 C:\Users\MBRFilter.inf', nil, SW_HIDE);
   end;
 end;
+if CheckBox6.Checked = true then disableapp('syskey','syskey.exe');
 if deldiskpart.Checked = true then disableapp('diskpart','diskpart.exe');
 if delbcdedit.Checked = true then disableapp('bcdedit', 'bcdedit.exe');
 if delmountvol.Checked = true then disableapp('mountvol', 'mountvol.exe');
@@ -223,10 +268,23 @@ begin
   cmddisable(true);
 end;
 if disableregedit.Checked = true then RegistryDisable(true);
-ShowMessage('Done!');
-if RadioButton2.Checked = true then ShellExecute(Handle, 'runas', 'shutdown.exe', '-r -t 1', nil, SW_HIDE);
-if RadioButton3.Checked = true then ShellExecute(Handle, 'runas', 'wmic.exe', 'os where primary=1 reboot', nil, SW_HIDE);
-Application.Terminate;
+if RadioButton2.Checked = true then
+begin
+  MyExitWindows(EWX_REBOOT or EWX_FORCE);
+  Application.Terminate;
+end
+else
+begin
+  ShowMessage('Done!');
+  if RadioButton1.Checked = true then MyExitWindows(EWX_REBOOT or EWX_FORCE);
+  Application.Terminate;
+end;
+end;
+
+procedure TForm8.Button4Click(Sender: TObject);
+begin
+Form1.Show;
+Form8.Hide;
 end;
 
 procedure TForm8.CheckBox4Click(Sender: TObject);
@@ -243,7 +301,8 @@ begin
   disableregedit.Checked := true;
   disabletaskmgr.Checked := true;
   CheckBox5.Checked := true;
-  mbrfilter.Checked := true;
+  if mbrfilter.Enabled = true then mbrfilter.Checked := true;
+  CheckBox6.Checked := true;
 end
 else
 begin
@@ -257,9 +316,17 @@ begin
   disableregedit.Checked := false;
   disabletaskmgr.Checked := false;
   CheckBox5.Checked := false;
-  mbrfilter.Checked := false;
+  if mbrfilter.Enabled = true then mbrfilter.Checked := false;
+  CheckBox6.Checked := false;
 end;
 
+end;
+
+procedure TForm8.FormCreate(Sender: TObject);
+begin
+StatusBar1.Panels[0].Text := 'System: ' + IsWin64Or32;
+StatusBar1.Panels[1].Text := 'OS: ' + TOSVersion.Name;
+if TOSVersion.Name = 'Windows 10' then mbrfilter.Enabled := false;
 end;
 
 end.
