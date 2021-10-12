@@ -5,7 +5,7 @@
         <FrameworkType>VCL</FrameworkType>
         <MainSource>VMAntiKill.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Application</AppType>
@@ -102,6 +102,11 @@
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
+        <AppExecutionLevel>requireAdministrator</AppExecutionLevel>
+        <VerInfo_Keys>CompanyName=DS1NC;FileDescription=$(MSBuildProjectName);FileVersion=1.0.3.0;InternalName=VMAntiKill;LegalCopyright=DS1NC;LegalTrademarks=DS1NC;OriginalFilename=VMAntiKill.exe;ProgramID=com.DesConnet.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.3.0;Comments=Save VM in CollabVM;SpecialBuild=1.0.3(Beta)</VerInfo_Keys>
+        <VerInfo_Special>true</VerInfo_Special>
+        <Icon_MainIcon>VMAntiKill_Icon.ico</Icon_MainIcon>
+        <VerInfo_Release>3</VerInfo_Release>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">

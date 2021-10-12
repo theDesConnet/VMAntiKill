@@ -35,17 +35,20 @@ type
     GroupBox4: TGroupBox;
     mbrfilter: TCheckBox;
     diswmic: TCheckBox;
-    CheckBox2: TCheckBox;
+    fulluac: TCheckBox;
     StatusBar1: TStatusBar;
     RadioButton1: TRadioButton;
     RadioButton2: TRadioButton;
     Label3: TLabel;
     Button4: TButton;
     CheckBox6: TCheckBox;
+    dissysprep: TCheckBox;
     procedure Button1Click(Sender: TObject);
     procedure CheckBox4Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Button4Click(Sender: TObject);
+    procedure disgpeditClick(Sender: TObject);
+    procedure dismmcClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -134,6 +137,24 @@ begin
     end;
   finally
     Reg.Free;
+  end;
+end;
+
+procedure UAC(PromptOnSecureDesktop: integer; EnableLUA: integer; ConsentPromptBehaviorAdmin: integer);
+var
+Reg: TRegistry;
+begin
+  Reg := TRegistry.Create;
+  try
+    Reg.RootKey := HKEY_LOCAL_MACHINE;
+    if Reg.OpenKey('SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System', true) then
+    begin
+      Reg.WriteInteger('PromptOnSecureDesktop', PromptOnSecureDesktop);
+      Reg.WriteInteger('EnableLUA', EnableLUA);
+      Reg.WriteInteger('ConsentPromptBehaviorAdmin', ConsentPromptBehaviorAdmin);
+    end;
+  finally
+  Reg.Free;
   end;
 end;
 
@@ -262,11 +283,13 @@ begin
 end;
 if CheckBox1.Checked = true then disableapp('powershell','powershell.exe');
 if diswmic.Checked = true then disableapp('wmic','wmic.exe');
+if dissysprep.Checked = true then disableapp('sysprep','sysprep.exe');
 if disablecmd.Checked = true then
 begin
   disableapp('cmd', 'cmd.exe');
   cmddisable(true);
 end;
+if fulluac.Checked = true then UAC(1, 1, 2);
 if disableregedit.Checked = true then RegistryDisable(true);
 if RadioButton2.Checked = true then
 begin
@@ -322,11 +345,49 @@ end;
 
 end;
 
+procedure TForm8.disgpeditClick(Sender: TObject);
+var
+Warning: Word;
+begin
+if disableregedit.Checked = true then
+begin
+if disgpedit.Checked = true then
+begin
+Warning:=MessageBox(handle, PChar('This action will be irreversible. In this case, we advise you to leave either RegEdit or gpedit.msc unlocked.'), PChar('Warning!'), MB_YESNO+MB_ICONWARNING);
+case Warning of
+idyes: disgpedit.Checked := true;
+idno: disgpedit.Checked := false;
+end;
+end;
+end;
+end;
+
+procedure TForm8.dismmcClick(Sender: TObject);
+var
+Warning: Word;
+begin
+if disableregedit.Checked = true then
+begin
+if disgpedit.Checked = true then
+begin
+if dismmc.Checked = true then
+begin
+Warning:=MessageBox(handle, PChar('This action will be irreversible. In this case, we advise you to leave either RegEdit or gpedit.msc unlocked.'), PChar('Warning!'), MB_YESNO+MB_ICONWARNING);
+case Warning of
+idyes: dismmc.Checked := true;
+idno: dismmc.Checked := false;
+end;
+end;
+end;
+end;
+end;
+
 procedure TForm8.FormCreate(Sender: TObject);
 begin
 StatusBar1.Panels[0].Text := 'System: ' + IsWin64Or32;
 StatusBar1.Panels[1].Text := 'OS: ' + TOSVersion.Name;
 if TOSVersion.Name = 'Windows 10' then mbrfilter.Enabled := false;
+if TOSVersion.Name = 'Windows 11' then mbrfilter.Enabled := false;
 end;
 
 end.

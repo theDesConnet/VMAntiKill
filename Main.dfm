@@ -30,11 +30,11 @@ object Form8: TForm8
     ParentFont = False
   end
   object Label2: TLabel
-    Left = 268
+    Left = 292
     Top = 21
-    Width = 65
+    Width = 32
     Height = 13
-    Caption = 'v1.0.2 (Beta)'
+    Caption = 'v1.0.3'
   end
   object Label3: TLabel
     Left = 16
@@ -138,6 +138,14 @@ object Form8: TForm8
       Caption = 'Disable SysKey'
       TabOrder = 10
     end
+    object dissysprep: TCheckBox
+      Left = 229
+      Top = 85
+      Width = 105
+      Height = 17
+      Caption = 'Disable SysPrep'
+      TabOrder = 11
+    end
   end
   object Button1: TButton
     Left = 4
@@ -206,6 +214,7 @@ object Form8: TForm8
       Height = 17
       Caption = 'Disable gpedit.msc'
       TabOrder = 1
+      OnClick = disgpeditClick
     end
     object dismmc: TCheckBox
       Left = 241
@@ -214,6 +223,7 @@ object Form8: TForm8
       Height = 17
       Caption = 'Disable MMC'
       TabOrder = 2
+      OnClick = dismmcClick
     end
     object diswmic: TCheckBox
       Left = 16
@@ -223,13 +233,12 @@ object Form8: TForm8
       Caption = 'Disable WMIC'
       TabOrder = 3
     end
-    object CheckBox2: TCheckBox
+    object fulluac: TCheckBox
       Left = 111
       Top = 40
-      Width = 97
+      Width = 146
       Height = 17
-      Caption = 'Run Once Apps'
-      Enabled = False
+      Caption = 'Enable full UAC protection'
       TabOrder = 4
     end
   end
