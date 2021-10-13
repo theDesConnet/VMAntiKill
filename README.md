@@ -1,5 +1,5 @@
 # VMAntiKill
-This program is designed to prevent the destruction or hinder the normal operation of the VM using standard Windows utilities
+This program is designed to prevent destruction or hindering the normal operation of VMs on ColabVM using standard Windows utilities.
 
 # Features
 * Disabling standard Windows utilities
