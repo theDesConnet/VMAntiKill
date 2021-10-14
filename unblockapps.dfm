@@ -195,9 +195,6 @@ object Form2: TForm2
         Text = 'VMAntiKill v1.0.4 (c0d9d by DesConnet)'
         Width = 50
       end>
-    ExplicitLeft = 40
-    ExplicitTop = 344
-    ExplicitWidth = 0
   end
   object GroupBox2: TGroupBox
     Left = 8

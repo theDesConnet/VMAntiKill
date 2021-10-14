@@ -128,7 +128,7 @@ begin
   end;
 end;
 
-procedure unblocksystem(cmd: boolean; regedit: boolean; taskmgr: boolean);
+procedure unblocksystem(regedit: boolean; taskmgr: boolean);
 var
   Reg : TRegistry;
 begin
@@ -137,9 +137,25 @@ begin
     Reg.RootKey := HKEY_CURRENT_USER;
     if Reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Policies\System', True) then
     begin
-      if cmd = true then if Reg.ValueExists('DisableCMD') then Reg.DeleteValue('DisableCMD');
       if regedit = true then if Reg.ValueExists('DisableRegistryTools') then Reg.DeleteValue('DisableRegistryTools');
       if taskmgr = true then if Reg.ValueExists('DisableTaskMgr') then Reg.DeleteValue('DisableTaskMgr');
+      Reg.CloseKey;
+    end;
+  finally
+    Reg.Free;
+  end;
+end;
+
+procedure unblockcmd();
+var
+  Reg : TRegistry;
+begin
+  Reg := TRegistry.Create;
+  try
+    Reg.RootKey := HKEY_CURRENT_USER;
+    if Reg.OpenKey('\Software\Policies\Microsoft\Windows\System', True) then
+    begin
+      if Reg.ValueExists('DisableCMD') then Reg.DeleteValue('DisableCMD');
       Reg.CloseKey;
     end;
   finally
@@ -154,7 +170,7 @@ if diskpart.Checked = true then unblockapp('diskpart');
 if bcdedit.Checked = true then unblockapp('bcdedit');
 if mountvol.Checked = true then unblockapp('mountvol');
 if msoobe.Checked = true then unblockapp('msoobe');
-if taskmgr.Checked = true then unblocksystem(false, false, true); unblockapp('taskmgr');
+if taskmgr.Checked = true then unblocksystem(false, true); unblockapp('taskmgr');
 if uninstall.Checked = true then unblockapp('uninstall');
 if gpedit.Checked = true then unblockapp('gpedit');
 if mmc.Checked = true then unblockapp('mmc');
@@ -169,12 +185,11 @@ if sysprep.Checked = true then unblockapp('sysprep');
 if cmd.Checked = true then
 begin
   unblockapp('cmd');
-  unblocksystem(true, false, false);
 end;
 if regedit.Checked = true then
 begin
 unblockapp('regedit');
-unblocksystem(false,true,false);
+unblocksystem(true,false);
 end;
 if RadioButton1.Checked = true then
 begin
