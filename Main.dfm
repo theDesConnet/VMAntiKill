@@ -4,7 +4,7 @@ object Form8: TForm8
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'VMAntiKill for CollabVM (By DesConnet)'
-  ClientHeight = 496
+  ClientHeight = 512
   ClientWidth = 341
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -30,11 +30,11 @@ object Form8: TForm8
     ParentFont = False
   end
   object Label2: TLabel
-    Left = 292
+    Left = 286
     Top = 21
     Width = 32
     Height = 13
-    Caption = 'v1.0.3'
+    Caption = 'v1.0.4'
   end
   object Label3: TLabel
     Left = 16
@@ -43,10 +43,19 @@ object Form8: TForm8
     Height = 13
     Caption = 'by DesConnet'
   end
+  object Label4: TLabel
+    Left = 16
+    Top = 40
+    Width = 302
+    Height = 13
+    Caption = 
+      '*If the checkbox is unavailable, then the application is disable' +
+      'd'
+  end
   object GroupBox1: TGroupBox
     Left = 0
-    Top = 40
-    Width = 337
+    Top = 59
+    Width = 338
     Height = 106
     Caption = 'Disable'
     TabOrder = 0
@@ -149,7 +158,7 @@ object Form8: TForm8
   end
   object Button1: TButton
     Left = 4
-    Top = 431
+    Top = 446
     Width = 329
     Height = 41
     Caption = 'Start'
@@ -159,7 +168,7 @@ object Form8: TForm8
   end
   object GroupBox2: TGroupBox
     Left = 0
-    Top = 263
+    Top = 279
     Width = 341
     Height = 42
     Caption = 'Reboot (Recommended)'
@@ -193,7 +202,7 @@ object Form8: TForm8
   end
   object GroupBox3: TGroupBox
     Left = 0
-    Top = 191
+    Top = 207
     Width = 341
     Height = 66
     Caption = 'Options'
@@ -214,7 +223,6 @@ object Form8: TForm8
       Height = 17
       Caption = 'Disable gpedit.msc'
       TabOrder = 1
-      OnClick = disgpeditClick
     end
     object dismmc: TCheckBox
       Left = 241
@@ -223,7 +231,6 @@ object Form8: TForm8
       Height = 17
       Caption = 'Disable MMC'
       TabOrder = 2
-      OnClick = dismmcClick
     end
     object diswmic: TCheckBox
       Left = 16
@@ -244,7 +251,7 @@ object Form8: TForm8
   end
   object GroupBox5: TGroupBox
     Left = 0
-    Top = 311
+    Top = 327
     Width = 341
     Height = 106
     Caption = 'Other'
@@ -263,9 +270,9 @@ object Form8: TForm8
       Top = 78
       Width = 335
       Height = 25
-      Caption = 'Disable Custom App (Soon)'
-      Enabled = False
+      Caption = 'Unblock Apps'
       TabOrder = 1
+      OnClick = Button3Click
     end
     object Button4: TButton
       Left = 3
@@ -279,7 +286,7 @@ object Form8: TForm8
   end
   object GroupBox4: TGroupBox
     Left = 0
-    Top = 148
+    Top = 167
     Width = 341
     Height = 37
     Caption = 'Addon'#39's'
@@ -295,7 +302,7 @@ object Form8: TForm8
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 477
+    Top = 493
     Width = 341
     Height = 19
     Panels = <
@@ -308,5 +315,6 @@ object Form8: TForm8
         Text = 'OS: Unknown'
         Width = 100
       end>
+    ExplicitTop = 477
   end
 end

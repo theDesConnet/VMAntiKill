@@ -89,11 +89,8 @@ object Form1: TForm1
     Height = 19
     Panels = <
       item
-        Text = 'VMAntiKill v1.0.2 (By DesConnet)'
+        Text = 'VMAntiKill v1.0.4 (c09d9 by DesConnet)'
         Width = 50
       end>
-    ExplicitLeft = 64
-    ExplicitTop = 264
-    ExplicitWidth = 0
   end
 end
