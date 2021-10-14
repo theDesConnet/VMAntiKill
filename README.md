@@ -22,11 +22,12 @@ This program is designed to prevent destruction or hindering the normal operatio
   * Install MBRFilter (Not working on Windows 10 and 11)
   * Enable full UAC protection
   * Antivirus Installer
+  * Ability to unblock apps
+  * Add check for blocked applications
 
 * Soon
-  * Add check for blocked applications
   * Auto update system
-  * Ability to unblock apps
+
 
 # Links
 [YouTube](https://youtube.com/DesConnet)
