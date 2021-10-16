@@ -31,6 +31,7 @@ type
     StatusBar1: TStatusBar;
     GroupBox2: TGroupBox;
     RadioButton1: TRadioButton;
+    Resmon: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -186,6 +187,7 @@ if cmd.Checked = true then
 begin
   unblockapp('cmd');
 end;
+if resmon.Checked = true then unblockapp('resmon');
 if regedit.Checked = true then
 begin
 unblockapp('regedit');
@@ -225,6 +227,7 @@ CheckBlockApp('msoobe',msoobe);
 CheckBlockApp('bcdedit',bcdedit);
 CheckBlockApp('uninstall',uninstall);
 CheckBlockApp('regedit',regedit);
+CheckBlockApp('resmon',resmon);
 end;
 
 end.

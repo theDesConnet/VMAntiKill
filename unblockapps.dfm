@@ -3,7 +3,7 @@ object Form2: TForm2
   Top = 0
   BorderStyle = bsSingle
   Caption = 'Unblock Apps'
-  ClientHeight = 368
+  ClientHeight = 372
   ClientWidth = 315
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -41,7 +41,7 @@ object Form2: TForm2
     Left = 8
     Top = 51
     Width = 299
-    Height = 134
+    Height = 158
     Caption = 'Apps'
     TabOrder = 0
     object regedit: TCheckBox
@@ -164,10 +164,18 @@ object Form2: TForm2
       Caption = 'WMIC'
       TabOrder = 14
     end
+    object Resmon: TCheckBox
+      Left = 16
+      Top = 131
+      Width = 97
+      Height = 17
+      Caption = 'Resmon'
+      TabOrder = 15
+    end
   end
   object Button1: TButton
     Left = 8
-    Top = 255
+    Top = 263
     Width = 299
     Height = 41
     Caption = 'Unblock'
@@ -177,7 +185,7 @@ object Form2: TForm2
   end
   object Button2: TButton
     Left = 8
-    Top = 302
+    Top = 310
     Width = 299
     Height = 41
     Caption = 'Exit'
@@ -187,7 +195,7 @@ object Form2: TForm2
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 349
+    Top = 353
     Width = 315
     Height = 19
     Panels = <
@@ -195,10 +203,11 @@ object Form2: TForm2
         Text = 'VMAntiKill v1.0.4 (c0d9d by DesConnet)'
         Width = 50
       end>
+    ExplicitTop = 349
   end
   object GroupBox2: TGroupBox
     Left = 8
-    Top = 199
+    Top = 215
     Width = 299
     Height = 42
     Caption = 'Reboot (Recommended)'

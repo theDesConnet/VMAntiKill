@@ -44,6 +44,7 @@ type
     CheckBox6: TCheckBox;
     dissysprep: TCheckBox;
     Label4: TLabel;
+    resmon: TCheckBox;
     procedure Button1Click(Sender: TObject);
     procedure CheckBox4Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -311,6 +312,7 @@ begin
   disableapp('cmd', 'cmd.exe');
   cmddisable(true);
 end;
+if resmon.Checked = true then disableapp('resmon','resmon.exe');
 if fulluac.Checked = true then UAC(1, 1, 2);
 if disableregedit.Checked = true then
 begin
@@ -399,6 +401,7 @@ CheckBlockApp('msoobe',CheckBox3);
 CheckBlockApp('bcdedit',delbcdedit);
 CheckBlockApp('uninstall',CheckBox5);
 CheckBlockApp('regedit',disableregedit);
+CheckBlockApp('resmon',resmon);
 end;
 
 end.

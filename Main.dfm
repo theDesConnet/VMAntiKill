@@ -245,8 +245,16 @@ object Form8: TForm8
       Top = 40
       Width = 146
       Height = 17
-      Caption = 'Enable full UAC protection'
+      Caption = 'Enable UAC protection'
       TabOrder = 4
+    end
+    object resmon: TCheckBox
+      Left = 241
+      Top = 40
+      Width = 97
+      Height = 17
+      Caption = 'Disable resmon'
+      TabOrder = 5
     end
   end
   object GroupBox5: TGroupBox
@@ -315,6 +323,5 @@ object Form8: TForm8
         Text = 'OS: Unknown'
         Width = 100
       end>
-    ExplicitTop = 477
   end
 end
