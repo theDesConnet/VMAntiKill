@@ -17,6 +17,7 @@ This program is designed to prevent destruction or hindering the normal operatio
   * TaskMgr
   * PowerShell
   * WMIC
+  * ResMon
 
 * Other
   * Install MBRFilter (Not working on Windows 10 and 11)
